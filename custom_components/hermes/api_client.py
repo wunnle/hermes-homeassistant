@@ -7,7 +7,6 @@ from typing import Any
 
 import aiohttp
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import aiohttp_client
 
 from .exceptions import (
     HermesAuthenticationError,
@@ -43,16 +42,16 @@ class HermesApiClient:
 
     async def health(self) -> bool:
         """Check connectivity. Returns True if healthy."""
-        session = aiohttp_client.async_get_clientsession(self._hass)
         try:
-            async with session.get(
-                f"{self._base_url}/health",
-                headers=self._headers,
-                timeout=aiohttp.ClientTimeout(total=10),
-            ) as resp:
-                if resp.status == 401:
-                    raise HermesAuthenticationError("Invalid API key")
-                return resp.status == 200
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"{self._base_url}/health",
+                    headers=self._headers,
+                    timeout=aiohttp.ClientTimeout(total=10),
+                ) as resp:
+                    if resp.status == 401:
+                        raise HermesAuthenticationError("Invalid API key")
+                    return resp.status == 200
         except asyncio.TimeoutError as err:
             raise HermesTimeoutError("Health check timed out") from err
         except HermesAuthenticationError:
@@ -66,8 +65,6 @@ class HermesApiClient:
         conversation_id: str | None = None,
     ) -> str:
         """Send a message and return the assistant's response text."""
-        session = aiohttp_client.async_get_clientsession(self._hass)
-
         messages = [{"role": "user", "content": message}]
 
         payload: dict[str, Any] = {
@@ -76,23 +73,23 @@ class HermesApiClient:
             "stream": False,
         }
 
-        # Use conversation_id as a named conversation so Hermes maintains context
         if conversation_id:
             payload["conversation"] = conversation_id
 
         try:
-            async with session.post(
-                f"{self._base_url}/v1/chat/completions",
-                headers=self._headers,
-                json=payload,
-                timeout=aiohttp.ClientTimeout(total=self._timeout),
-            ) as resp:
-                if resp.status == 401:
-                    raise HermesAuthenticationError("Invalid API key")
-                if resp.status != 200:
-                    body = await resp.text()
-                    raise HermesConnectionError(f"HTTP {resp.status}: {body}")
-                data = await resp.json()
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    f"{self._base_url}/v1/chat/completions",
+                    headers=self._headers,
+                    json=payload,
+                    timeout=aiohttp.ClientTimeout(total=self._timeout),
+                ) as resp:
+                    if resp.status == 401:
+                        raise HermesAuthenticationError("Invalid API key")
+                    if resp.status != 200:
+                        body = await resp.text()
+                        raise HermesConnectionError(f"HTTP {resp.status}: {body}")
+                    data = await resp.json()
 
         except asyncio.TimeoutError as err:
             raise HermesTimeoutError("Request timed out") from err
