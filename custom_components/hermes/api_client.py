@@ -5,6 +5,7 @@ import asyncio
 import logging
 from typing import Any
 
+import aiohttp
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import aiohttp_client
 
@@ -65,8 +66,6 @@ class HermesApiClient:
         conversation_id: str | None = None,
     ) -> str:
         """Send a message and return the assistant's response text."""
-        import aiohttp
-
         session = aiohttp_client.async_get_clientsession(self._hass)
 
         messages = [{"role": "user", "content": message}]
