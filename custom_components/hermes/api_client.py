@@ -65,7 +65,18 @@ class HermesApiClient:
         conversation_id: str | None = None,
     ) -> str:
         """Send a message and return the assistant's response text."""
-        messages = [{"role": "user", "content": message}]
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are operating as a Home Assistant voice assistant. "
+                    "Keep responses short and spoken-word friendly — no markdown, no bullet lists, no code blocks. "
+                    "If you need more information to complete a request, always end your response with a direct question so the user knows to reply. "
+                    "For example: 'What time should I set it for?' or 'Which calendar should I add it to?'"
+                ),
+            },
+            {"role": "user", "content": message},
+        ]
 
         payload: dict[str, Any] = {
             "model": "hermes-agent",
