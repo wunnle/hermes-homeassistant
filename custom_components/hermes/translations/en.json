@@ -1,0 +1,53 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Hermes",
+        "description": "Enter the address of your Hermes API server.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "timeout": "Timeout (seconds)"
+        }
+      },
+      "options": {
+        "title": "Speech Options",
+        "data": {
+          "strip_emojis": "Strip emojis from TTS",
+          "tts_max_chars": "Max TTS characters (0 = unlimited)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Hermes. Check the host and port.",
+      "invalid_auth": "Invalid API key.",
+      "timeout": "Connection timed out.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "Hermes is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Hermes Settings",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "timeout": "Timeout (seconds)",
+          "strip_emojis": "Strip emojis from TTS",
+          "tts_max_chars": "Max TTS characters (0 = unlimited)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Hermes. Check the host and port.",
+      "invalid_auth": "Invalid API key.",
+      "timeout": "Connection timed out.",
+      "unknown": "Unexpected error."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "domain": "hermes",
+  "name": "Hermes Voice Assistant",
+  "codeowners": ["@ddrayne"],
+  "config_flow": true,
+  "documentation": "https://github.com/ddrayne/hermes-homeassistant",
+  "issue_tracker": "https://github.com/ddrayne/hermes-homeassistant/issues",
+  "requirements": [],
+  "iot_class": "local_polling",
+  "version": "1.0.0"
+}
