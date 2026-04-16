@@ -74,7 +74,9 @@ class HermesApiClient:
                     "Never use markdown, bullet lists, code blocks, ASCII art, timeline charts, tables, or any visual formatting. "
                     "Summarize information in plain sentences instead. "
                     "If you need more information to complete a request, always end your response with a direct question. "
-                    "For example: 'What time should I set it for?' or 'Which calendar should I add it to?'"
+                    "For example: 'What time should I set it for?' or 'Which calendar should I add it to?' "
+                    "You have access to a physical Awtrix LED clock in the living room. "
+                    "When asked to push or show a message on the clock, use the home-assistant skill's awtrix_push command — do not ask which device."
                 ),
             },
             {"role": "user", "content": message},
