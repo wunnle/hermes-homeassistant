@@ -55,8 +55,27 @@ def _trim_tts(text: str, max_chars: int) -> str:
 def _should_continue(text: str) -> bool:
     """Return True if the response looks like it expects a reply."""
     stripped = text.strip()
-    # Ends with a question mark (possibly followed by quotes/emoji)
-    return bool(re.search(r"\?[\s\"'""'']*$", stripped))
+    # Ends with a question mark
+    if re.search(r"\?[\s\"'\u201c\u201d\u2018\u2019]*$", stripped):
+        return True
+    # Contains phrases that imply waiting for input
+    continuation_phrases = [
+        "please provide",
+        "please tell me",
+        "please let me know",
+        "what would you like",
+        "what should",
+        "which would you",
+        "could you provide",
+        "could you tell",
+        "i need to know",
+        "i'll need",
+        "to create the event",
+        "to proceed",
+        "to set this up",
+    ]
+    lower = stripped.lower()
+    return any(phrase in lower for phrase in continuation_phrases)
 
 
 async def async_setup_entry(
